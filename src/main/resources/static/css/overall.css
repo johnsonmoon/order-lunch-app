@@ -1,0 +1,17 @@
+.col-center-block {
+    float: none;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#top {
+    bottom: 50px;
+    right: 50px;
+    text-align: center;
+    line-height: 50px;
+    width: 50px;
+    height: 50px;
+    background-color: deepskyblue;
+    border-radius: 50%;
+}

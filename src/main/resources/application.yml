@@ -1,0 +1,16 @@
+server:
+  port: 9080
+  servlet:
+    context-path: /
+    application-display-name: Order Lunch App
+  tomcat:
+    max-threads: 200
+    uri-encoding: UTF-8
+
+logging:
+  path: ${user.dir}/logs
+
+spring:
+  resources:
+    static-locations: classpath:/static/
+

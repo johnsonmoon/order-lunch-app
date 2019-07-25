@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>点餐页面</title>
+    <link rel="stylesheet" href="lib/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/overall.css">
+    <script src="lib/jquery.min.js"></script>
+    <script src="lib/bootstrap/js/bootstrap.min.js"></script>
+    <script src="js/common/Request.js"></script>
+    <script src="js/common/Utils.js"></script>
+</head>
+<body style="padding-bottom: 80px">
+<div>
+    <div class="col-center-block col-lg-4">
+        <div>
+            <div class="page-header">
+                <h1> 点餐
+                    <small id="order_lunch_info_sum">当前点餐人数: 0</small>
+                </h1>
+            </div>
+            <div>
+                <button id="order_lunch_btn_order_add" type="button" class="btn btn-success">点餐 +1</button>
+
+                <button id="order_lunch_btn_order_remove" type="button" class="btn btn-warning">点餐 -1</button>
+
+                <button id="order_lunch_btn_refresh" type="button" class="btn btn-info">刷新</button>
+
+                <button id="order_lunch_btn_clear" type="button" class="btn btn-danger">清空(谨慎使用)</button>
+            </div>
+        </div>
+        <br>
+        <div>
+            <table class="table table-bordered">
+                <caption>当前点餐详情</caption>
+                <thead>
+                <tr>
+                    <th>序号</th>
+                    <th>IP地址</th>
+                    <th>点餐增量</th>
+                    <th>提交时间</th>
+                </tr>
+                </thead>
+                <tbody id="order_lunch_info_detail_table_body">
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            refreshOrderDetails();
+
+            $("#order_lunch_btn_refresh").click(function () {
+                refreshOrderDetails();
+            });
+
+            $("#order_lunch_btn_order_add").click(function () {
+                executeGetWithJson(
+                    BASE_URL + "order/increase",
+                    function (data) {
+                        if (data && data === true) {
+                            refreshOrderDetails();
+                        } else {
+                            alert("Request failed.")
+                        }
+                    },
+                    function (data, status) {
+                        alert(status);
+                    }
+                );
+            });
+
+            $("#order_lunch_btn_order_remove").click(function () {
+                executeGetWithJson(
+                    BASE_URL + "order/decrease",
+                    function (data) {
+                        if (data && data === true) {
+                            refreshOrderDetails();
+                        } else {
+                            alert("Request failed.")
+                        }
+                    },
+                    function (data, status) {
+                        alert(status);
+                    }
+                );
+            });
+
+            $("#order_lunch_btn_clear").click(function () {
+                executeGetWithJson(
+                    BASE_URL + "order/clear",
+                    function (data) {
+                        if (data && data === true) {
+                            refreshOrderDetails();
+                        } else {
+                            alert("Request failed.")
+                        }
+                    },
+                    function (data, status) {
+                        alert(status);
+                    }
+                );
+            });
+        });
+
+        function refreshOrderDetails() {
+            $("#order_lunch_info_detail_table_body").empty();
+            $("#order_lunch_info_sum").text("当前点餐人数: 0");
+            executeGetWithJson(
+                BASE_URL + "order/details",
+                function (data) {
+                    if (data) {
+                        var sum = data.sum;
+                        $("#order_lunch_info_sum").text("当前点餐人数: " + sum);
+                        var orders = data.orders;
+                        if (orders && orders.length > 0) {
+                            for (var i = 0; i < orders.length; i++) {
+                                var order = orders[i];
+                                $("#order_lunch_info_detail_table_body").append(
+                                    "<tr>\n" +
+                                    "<td>" + order.number + "</td>\n" +
+                                    "<td>" + order.ipAddress + "</td>\n" +
+                                    "<td>" + order.appendNum + "</td>\n" +
+                                    "<td>" + formatDateTime(order.orderTime) + "</td>\n" +
+                                    "</tr>"
+                                );
+                            }
+                        }
+                    }
+                },
+                function (data, status) {
+                    alert(status);
+                }
+            );
+        }
+    </script>
+</div>
+</body>
+</html>
