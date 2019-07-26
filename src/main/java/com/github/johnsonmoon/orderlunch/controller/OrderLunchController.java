@@ -1,11 +1,14 @@
 package com.github.johnsonmoon.orderlunch.controller;
 
+import com.github.johnsonmoon.orderlunch.Util.OrderUtil;
 import com.github.johnsonmoon.orderlunch.action.OrderCache;
 import com.github.johnsonmoon.orderlunch.common.RestContext;
+import com.github.johnsonmoon.orderlunch.constant.MemberConstant;
 import com.github.johnsonmoon.orderlunch.entity.domain.Order;
 import com.github.johnsonmoon.orderlunch.entity.param.OrderParam;
 import com.github.johnsonmoon.orderlunch.entity.vo.OrderDetailsVO;
 import com.github.johnsonmoon.orderlunch.entity.vo.OrderVO;
+import com.github.johnsonmoon.orderlunch.http.HttpResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
@@ -41,7 +44,11 @@ public class OrderLunchController {
     }
 
     @GetMapping(path = "/increase", produces = "application/json")
-    public Boolean increaseOrder(OrderParam orderParam) {
+    @ResponseBody
+    public HttpResponse increaseOrder(OrderParam orderParam) {
+        if(!OrderUtil.validateMember(orderParam.getName())){
+            return new HttpResponse(201,"非法名称无法识别");
+        }
         try {
             acquireLock();
 
@@ -55,21 +62,25 @@ public class OrderLunchController {
             OrderCache.append(order);
         } catch (Exception e) {
             logger.warn(e.getMessage(), e);
-            return false;
+            return new HttpResponse(201,"点餐失败");
         } finally {
             releaseLock();
         }
-        return true;
+        return new HttpResponse(200,"点餐成功");
     }
 
     @GetMapping(path = "/decrease", produces = "application/json")
-    public Boolean decreaseOrder(OrderParam orderParam) {
+    @ResponseBody
+    public HttpResponse decreaseOrder(OrderParam orderParam) {
+        if(!OrderUtil.validateMember(orderParam.getName())){
+            return new HttpResponse(201,"非法名称无法识别");
+        }
         try {
             acquireLock();
 
             if (OrderCache.getSum() <= 0) {
                 logger.warn("Not able to decrease.");
-                return false;
+                return new HttpResponse(201,"撤销点餐失败");
             }
 
             Order order = new Order();
@@ -82,11 +93,11 @@ public class OrderLunchController {
             OrderCache.append(order);
         } catch (Exception e) {
             logger.warn(e.getMessage(), e);
-            return false;
+            return new HttpResponse(201,"撤销点餐失败");
         } finally {
             releaseLock();
         }
-        return true;
+        return new HttpResponse(200,"撤销点餐成功");
     }
 
     @GetMapping(path = "/clear", produces = "application/json")
@@ -124,7 +135,9 @@ public class OrderLunchController {
         for (Order order : orders) {
             sum += order.getAppendNum();
         }
+        Integer left = MemberConstant.memberSet.size() - sum;
         orderDetailsVO.setSum(sum);
+        orderDetailsVO.setLeft(left);
         return orderDetailsVO;
     }
 

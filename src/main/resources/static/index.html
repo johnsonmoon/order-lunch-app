@@ -153,11 +153,11 @@
                 executeGetWithJson(
                     BASE_URL + "order/increase?name=" + name + "&remark=" + remark,
                     function (data) {
-                        if (data && data === true) {
+                        if (data && data.status === 200) {
                             increaseModalDisplayNone();
                             refreshOrderDetails();
-                        } else {
-                            alert("Request failed.")
+                        }else{
+                            alert(data.msg);
                         }
                     },
                     function (data, status) {
@@ -180,11 +180,11 @@
                 executeGetWithJson(
                     BASE_URL + "order/decrease?name=" + name + "&remark=" + remark,
                     function (data) {
-                        if (data && data === true) {
+                        if (data && data.status === 200) {
                             decreaseModalDisplayNone();
                             refreshOrderDetails();
-                        } else {
-                            alert("Request failed.")
+                        }else{
+                            alert(data.msg);
                         }
                     },
                     function (data, status) {

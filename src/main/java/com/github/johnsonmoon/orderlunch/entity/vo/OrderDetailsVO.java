@@ -7,6 +7,7 @@ import java.util.List;
  */
 public class OrderDetailsVO {
     private Integer sum;
+    private Integer left;
     private List<OrderVO> orders;
 
     public Integer getSum() {
@@ -25,10 +26,19 @@ public class OrderDetailsVO {
         this.orders = orders;
     }
 
+    public Integer getLeft() {
+        return left;
+    }
+
+    public void setLeft(Integer left) {
+        this.left = left;
+    }
+
     @Override
     public String toString() {
         return "OrderDetailsVO{" +
                 "sum=" + sum +
+                ", left=" + left +
                 ", orders=" + orders +
                 '}';
     }

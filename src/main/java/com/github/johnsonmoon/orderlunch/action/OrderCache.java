@@ -1,5 +1,7 @@
 package com.github.johnsonmoon.orderlunch.action;
 
+import com.github.johnsonmoon.orderlunch.Util.OrderUtil;
+import com.github.johnsonmoon.orderlunch.constant.MemberConstant;
 import com.github.johnsonmoon.orderlunch.entity.domain.Order;
 
 import java.util.ArrayList;
@@ -24,6 +26,10 @@ public class OrderCache {
             sum += order.getAppendNum();
         }
         return sum;
+    }
+
+    public synchronized static Integer getLeft() {
+        return MemberConstant.memberSet.size() - getSum();
     }
 
     public synchronized static List<Order> getOrders() {
