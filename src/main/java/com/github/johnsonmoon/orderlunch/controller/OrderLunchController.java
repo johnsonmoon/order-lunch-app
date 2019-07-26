@@ -2,9 +2,10 @@ package com.github.johnsonmoon.orderlunch.controller;
 
 import com.github.johnsonmoon.orderlunch.action.OrderCache;
 import com.github.johnsonmoon.orderlunch.common.RestContext;
-import com.github.johnsonmoon.orderlunch.entity.Order;
-import com.github.johnsonmoon.orderlunch.entity.OrderDetailsVO;
-import com.github.johnsonmoon.orderlunch.entity.OrderVO;
+import com.github.johnsonmoon.orderlunch.entity.domain.Order;
+import com.github.johnsonmoon.orderlunch.entity.param.OrderParam;
+import com.github.johnsonmoon.orderlunch.entity.vo.OrderDetailsVO;
+import com.github.johnsonmoon.orderlunch.entity.vo.OrderVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
@@ -40,11 +41,12 @@ public class OrderLunchController {
     }
 
     @GetMapping(path = "/increase", produces = "application/json")
-    public Boolean increaseOrder() {
+    public Boolean increaseOrder(OrderParam orderParam) {
         try {
             acquireLock();
 
             Order order = new Order();
+            order.setName((orderParam == null || orderParam.getName() == null) ? "UNKNOWN" : orderParam.getName());
             order.setAppendNum(1);
             order.setIpAddress(getRequestIp(RestContext.getHttpServletRequest()));
             order.setOrderTime(System.currentTimeMillis());
@@ -60,7 +62,7 @@ public class OrderLunchController {
     }
 
     @GetMapping(path = "/decrease", produces = "application/json")
-    public Boolean decreaseOrder() {
+    public Boolean decreaseOrder(OrderParam orderParam) {
         try {
             acquireLock();
 
@@ -70,6 +72,7 @@ public class OrderLunchController {
             }
 
             Order order = new Order();
+            order.setName((orderParam == null || orderParam.getName() == null) ? "UNKNOWN" : orderParam.getName());
             order.setAppendNum(-1);
             order.setIpAddress(getRequestIp(RestContext.getHttpServletRequest()));
             order.setOrderTime(System.currentTimeMillis());
@@ -106,6 +109,7 @@ public class OrderLunchController {
         for (int index = 0; index < orders.size(); index++) {
             Order order = orders.get(index);
             OrderVO orderVO = new OrderVO();
+            orderVO.setName(order.getName());
             orderVO.setNumber(index + 1);
             orderVO.setAppendNum(order.getAppendNum());
             orderVO.setIpAddress(order.getIpAddress());
@@ -122,7 +126,6 @@ public class OrderLunchController {
     }
 
     private static String getRequestIp(HttpServletRequest request) {
-        //TODO
         String ip = null;
         try {
             ip = request.getHeader("Proxy-Client-IP");

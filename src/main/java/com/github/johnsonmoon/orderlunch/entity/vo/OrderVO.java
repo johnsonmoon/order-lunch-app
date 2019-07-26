@@ -1,13 +1,22 @@
-package com.github.johnsonmoon.orderlunch.entity;
+package com.github.johnsonmoon.orderlunch.entity.vo;
 
 /**
  * Create by xuyh at 2019/7/25 18:57.
  */
 public class OrderVO {
+    private String name;
     private Integer number;
     private String ipAddress;
     private Integer appendNum;//+1, -1
     private Long orderTime;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public Integer getNumber() {
         return number;
@@ -44,7 +53,8 @@ public class OrderVO {
     @Override
     public String toString() {
         return "OrderVO{" +
-                "number=" + number +
+                "name='" + name + '\'' +
+                ", number=" + number +
                 ", ipAddress='" + ipAddress + '\'' +
                 ", appendNum=" + appendNum +
                 ", orderTime=" + orderTime +

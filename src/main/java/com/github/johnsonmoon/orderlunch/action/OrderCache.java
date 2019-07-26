@@ -1,6 +1,6 @@
 package com.github.johnsonmoon.orderlunch.action;
 
-import com.github.johnsonmoon.orderlunch.entity.Order;
+import com.github.johnsonmoon.orderlunch.entity.domain.Order;
 
 import java.util.ArrayList;
 import java.util.List;

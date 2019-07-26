@@ -1,4 +1,4 @@
-package com.github.johnsonmoon.orderlunch.entity;
+package com.github.johnsonmoon.orderlunch.entity.vo;
 
 import java.util.List;
 
