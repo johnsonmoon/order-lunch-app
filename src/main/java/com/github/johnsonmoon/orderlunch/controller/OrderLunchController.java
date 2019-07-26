@@ -47,6 +47,7 @@ public class OrderLunchController {
 
             Order order = new Order();
             order.setName((orderParam == null || orderParam.getName() == null) ? "UNKNOWN" : orderParam.getName());
+            order.setRemark(orderParam == null || orderParam.getRemark() == null ? "" : orderParam.getRemark());
             order.setAppendNum(1);
             order.setIpAddress(getRequestIp(RestContext.getHttpServletRequest()));
             order.setOrderTime(System.currentTimeMillis());
@@ -73,6 +74,7 @@ public class OrderLunchController {
 
             Order order = new Order();
             order.setName((orderParam == null || orderParam.getName() == null) ? "UNKNOWN" : orderParam.getName());
+            order.setRemark(orderParam == null || orderParam.getRemark() == null ? "" : orderParam.getRemark());
             order.setAppendNum(-1);
             order.setIpAddress(getRequestIp(RestContext.getHttpServletRequest()));
             order.setOrderTime(System.currentTimeMillis());
@@ -114,6 +116,7 @@ public class OrderLunchController {
             orderVO.setAppendNum(order.getAppendNum());
             orderVO.setIpAddress(order.getIpAddress());
             orderVO.setOrderTime(order.getOrderTime());
+            orderVO.setRemark(order.getRemark());
             orderVOS.add(orderVO);
         }
         orderDetailsVO.setOrders(orderVOS);

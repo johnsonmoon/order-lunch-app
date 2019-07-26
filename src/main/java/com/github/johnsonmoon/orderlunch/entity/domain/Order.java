@@ -8,6 +8,7 @@ public class Order {
     private String ipAddress;
     private Integer appendNum;//+1, -1
     private Long orderTime;
+    private String remark;//备注
 
     public String getName() {
         return name;
@@ -41,6 +42,14 @@ public class Order {
         this.orderTime = orderTime;
     }
 
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+
     @Override
     public String toString() {
         return "Order{" +
@@ -48,6 +57,7 @@ public class Order {
                 ", ipAddress='" + ipAddress + '\'' +
                 ", appendNum=" + appendNum +
                 ", orderTime=" + orderTime +
+                ", remark='" + remark + '\'' +
                 '}';
     }
 }

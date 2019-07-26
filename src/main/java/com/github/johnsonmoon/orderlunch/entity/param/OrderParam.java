@@ -5,6 +5,7 @@ package com.github.johnsonmoon.orderlunch.entity.param;
  */
 public class OrderParam {
     private String name;
+    private String remark;
 
     public String getName() {
         return name;
@@ -14,10 +15,19 @@ public class OrderParam {
         this.name = name;
     }
 
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+
     @Override
     public String toString() {
-        return "OrderIncreaseParam{" +
+        return "OrderParam{" +
                 "name='" + name + '\'' +
+                ", remark='" + remark + '\'' +
                 '}';
     }
 }

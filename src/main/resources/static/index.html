@@ -13,7 +13,7 @@
 </head>
 <body style="padding-bottom: 80px">
 <div>
-    <div class="col-center-block col-lg-6">
+    <div class="col-center-block col-lg-8">
         <div>
             <div class="page-header">
                 <h1> 点餐
@@ -44,9 +44,15 @@
                     <div class="modal-body">
                         <div role="form">
                             <div>
-                                <label class="col-lg-2">你的名称: </label> <input
-                                    id="order_lunch_modal_increase_txt_name"
-                                    class="form-control" placeholder="请输入名称" type="text">
+                                <label class="col-lg-2">你的名称: </label>
+                                <input id="order_lunch_modal_increase_txt_name"
+                                       class="form-control" placeholder="请输入名称" type="text">
+                            </div>
+                            <br>
+                            <div>
+                                <label class="col-lg-2">备注信息: </label>
+                                <textarea id="order_lunch_modal_increase_txt_remark" class="form-control" rows="3"
+                                          placeholder="请输入备注信息"></textarea>
                             </div>
                             <br>
                         </div>
@@ -83,6 +89,12 @@
                                     class="form-control" placeholder="请输入名称" type="text">
                             </div>
                             <br>
+                            <div>
+                                <label class="col-lg-2">备注信息: </label>
+                                <textarea id="order_lunch_modal_decrease_txt_remark" class="form-control" rows="3"
+                                          placeholder="请输入备注信息"></textarea>
+                            </div>
+                            <br>
                         </div>
                         <br>
                     </div>
@@ -110,6 +122,7 @@
                     <th>参加人名</th>
                     <th>点餐增量</th>
                     <th>提交时间</th>
+                    <th>备注信息</th>
                 </tr>
                 </thead>
                 <tbody id="order_lunch_info_detail_table_body">
@@ -136,8 +149,9 @@
 
             $("#order_lunch_modal_increase_submit").click(function () {
                 var name = $("#order_lunch_modal_increase_txt_name").val();
+                var remark = $("#order_lunch_modal_increase_txt_remark").val();
                 executeGetWithJson(
-                    BASE_URL + "order/increase?name=" + name,
+                    BASE_URL + "order/increase?name=" + name + "&remark=" + remark,
                     function (data) {
                         if (data && data === true) {
                             increaseModalDisplayNone();
@@ -162,8 +176,9 @@
 
             $("#order_lunch_modal_decrease_submit").click(function () {
                 var name = $("#order_lunch_modal_decrease_txt_name").val();
+                var remark = $("#order_lunch_modal_decrease_txt_remark").val();
                 executeGetWithJson(
-                    BASE_URL + "order/decrease?name=" + name,
+                    BASE_URL + "order/decrease?name=" + name + "&remark=" + remark,
                     function (data) {
                         if (data && data === true) {
                             decreaseModalDisplayNone();
@@ -221,6 +236,7 @@
                                     "<td>" + name + "</td>\n" +
                                     "<td>" + order.appendNum + "</td>\n" +
                                     "<td>" + formatDateTime(order.orderTime) + "</td>\n" +
+                                    "<td>" + order.remark + "</td>\n" +
                                     "</tr>"
                                 );
                             }
