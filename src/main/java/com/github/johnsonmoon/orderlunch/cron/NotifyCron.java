@@ -30,7 +30,7 @@ public class NotifyCron {
 
     @Scheduled(cron = "${unorder.member.notifyTime}")
     public void checkAndNotify() {
-        List<String> mobiles = new ArrayList();
+        ArrayList mobiles = new ArrayList();
         OrderDetailsVO orderDetailsVO = OrderUtil.getOrderDetail();
         if(null != orderDetailsVO && !orderDetailsVO.getNotOrders().isEmpty()){
             orderDetailsVO.getNotOrders().stream().forEach(orderVO -> {
