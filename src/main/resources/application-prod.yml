@@ -1,0 +1,6 @@
+spring:
+  resources:
+    static-locations: file:${work.home}/static/
+
+logging:
+  file: ${work.home}/logs/order-lunch.log

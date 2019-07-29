@@ -7,12 +7,9 @@ server:
     max-threads: 200
     uri-encoding: UTF-8
 
-logging:
-  path: ${user.dir}/logs
-
 spring:
-  resources:
-    static-locations: classpath:/static/
+  profiles:
+    active: dev
 
 unorder:
   member:
