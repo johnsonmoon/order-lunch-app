@@ -29,7 +29,7 @@ public class OrderCache {
     }
 
     public synchronized static Integer getLeft() {
-        return MemberConstant.memberSet.size() - getSum();
+        return MemberConstant.memberMap.size() - getSum();
     }
 
     public synchronized static List<Order> getOrders() {

@@ -18,6 +18,7 @@
             <div class="page-header">
                 <h1> 点餐
                     <small id="order_lunch_info_sum">当前点餐人数: 0</small>
+                    <small id="order_lunch_info_left">未点餐人数: 0</small>
                 </h1>
             </div>
             <div>
@@ -213,12 +214,15 @@
         function refreshOrderDetails() {
             $("#order_lunch_info_detail_table_body").empty();
             $("#order_lunch_info_sum").text("当前点餐人数: 0");
+            $("#order_lunch_info_left").text("未点餐人数: 0");
             executeGetWithJson(
                 BASE_URL + "order/details",
                 function (data) {
                     if (data) {
                         var sum = data.sum;
+                        var left = data.left;
                         $("#order_lunch_info_sum").text("当前点餐人数: " + sum);
+                        $("#order_lunch_info_left").text("未点餐人数: " + left);
                         var orders = data.orders;
                         if (orders && orders.length > 0) {
                             for (var i = 0; i < orders.length; i++) {

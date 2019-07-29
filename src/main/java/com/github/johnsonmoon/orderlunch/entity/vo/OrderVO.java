@@ -11,6 +11,12 @@ public class OrderVO {
     private Long orderTime;
     private String remark;//备注
 
+    public OrderVO(){}
+
+    public OrderVO(String name){
+        this.name = name;
+    }
+
     public String getName() {
         return name;
     }
