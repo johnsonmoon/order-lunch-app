@@ -48,8 +48,6 @@ public class MemberConstant {
                             }
                         }
                     }
-                    //TODO delete
-                    System.out.println(memberMap);
                 }
             } catch (Exception e) {
                 logger.warn(e.getMessage(), e);
