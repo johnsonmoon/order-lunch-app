@@ -4,3 +4,8 @@ spring:
 
 logging:
   file: ${user.dir}/logs/order-lunch.log
+
+order:
+  lunch:
+    web:
+      member-define-file: ${user.dir}/src/main/resources/members.json

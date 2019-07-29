@@ -10,6 +10,8 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
@@ -34,9 +36,9 @@ public class MemberConstant {
     public void init() {
         ThreadPools.applicationInitializeThreadPool.submit(() -> {
             try {
-                ClassPathResource resource = new ClassPathResource(memberDefineFilePath);
-                if (resource.exists()) {
-                    InputStream inputStream = resource.getInputStream();
+                File file = new File(memberDefineFilePath);
+                if (file.exists() && file.isFile()) {
+                    InputStream inputStream = new FileInputStream(file);
                     Map<String, Object> map = JSON.parseObject(inputStream, Map.class);
                     if (map != null && map.containsKey("members")) {
                         List<Map<String, Object>> maps = (List<Map<String, Object>>) map.get("members");
