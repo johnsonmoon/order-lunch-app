@@ -38,10 +38,5 @@
             <outputDirectory>static</outputDirectory>
             <fileMode>0766</fileMode>
         </fileSet>
-        <fileSet>
-            <directory>src/main/resources/templates</directory>
-            <outputDirectory>templates</outputDirectory>
-            <fileMode>0766</fileMode>
-        </fileSet>
     </fileSets>
 </assembly>
