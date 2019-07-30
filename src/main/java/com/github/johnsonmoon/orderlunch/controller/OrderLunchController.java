@@ -7,7 +7,7 @@ import com.github.johnsonmoon.orderlunch.common.RestContext;
 import com.github.johnsonmoon.orderlunch.entity.domain.Order;
 import com.github.johnsonmoon.orderlunch.entity.param.OrderParam;
 import com.github.johnsonmoon.orderlunch.entity.vo.OrderDetailsVO;
-import com.github.johnsonmoon.orderlunch.http.HttpResponse;
+import com.github.johnsonmoon.orderlunch.entity.http.HttpResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

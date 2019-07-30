@@ -1,6 +1,4 @@
-package com.github.johnsonmoon.orderlunch.http;
-
-import java.util.HashMap;
+package com.github.johnsonmoon.orderlunch.entity.http;
 
 /**
  * @Author: fanxx

@@ -26,13 +26,6 @@ public class OrderCache {
     @Autowired
     private OrderService orderService;
 
-    public synchronized static Order getLastOne() {
-        if (orders.isEmpty()) {
-            return null;
-        }
-        return orders.get(orders.size() - 1);
-    }
-
     public synchronized static Integer getSum() {
         Integer sum = 0;
         for (Order order : orders) {

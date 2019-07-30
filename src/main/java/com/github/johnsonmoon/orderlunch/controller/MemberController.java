@@ -1,7 +1,7 @@
 package com.github.johnsonmoon.orderlunch.controller;
 
 import com.github.johnsonmoon.orderlunch.constant.MemberConstant;
-import com.github.johnsonmoon.orderlunch.http.HttpResponse;
+import com.github.johnsonmoon.orderlunch.entity.http.HttpResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.GetMapping;

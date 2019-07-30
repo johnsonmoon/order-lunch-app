@@ -3,8 +3,6 @@ package com.github.johnsonmoon.orderlunch.service.impl;
 import com.github.johnsonmoon.orderlunch.entity.domain.Order;
 import com.github.johnsonmoon.orderlunch.repository.OrderRepository;
 import com.github.johnsonmoon.orderlunch.service.OrderService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -15,8 +13,6 @@ import java.util.List;
  */
 @Component
 public class OrderServiceImpl implements OrderService {
-    private static Logger logger = LoggerFactory.getLogger(OrderServiceImpl.class);
-
     @Autowired
     private OrderRepository orderRepository;
 
