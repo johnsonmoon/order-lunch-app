@@ -1,4 +1,4 @@
-package com.github.johnsonmoon.orderlunch.Util;
+package com.github.johnsonmoon.orderlunch.util;
 
 import com.github.johnsonmoon.orderlunch.action.OrderCache;
 import com.github.johnsonmoon.orderlunch.constant.MemberConstant;
@@ -14,7 +14,7 @@ import java.util.List;
  * @Date: 2019/7/26 下午5:52
  * @Description:
  */
-public class OrderUtil {
+public class OrderUtils {
     public static boolean validateMember(String name){
         return MemberConstant.memberMap.containsKey(name);
     }

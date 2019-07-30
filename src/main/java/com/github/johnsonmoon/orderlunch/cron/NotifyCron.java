@@ -1,19 +1,15 @@
 package com.github.johnsonmoon.orderlunch.cron;
 
-import com.alibaba.fastjson.JSON;
-import com.github.johnsonmoon.orderlunch.Util.OrderUtil;
+import com.github.johnsonmoon.orderlunch.util.OrderUtils;
 import com.github.johnsonmoon.orderlunch.constant.MemberConstant;
 import com.github.johnsonmoon.orderlunch.entity.vo.OrderDetailsVO;
 import com.github.johnsonmoon.orderlunch.notify.DingDingAlarm;
-import com.github.johnsonmoon.orderlunch.notify.DingDingService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @Author: fanxx
@@ -31,7 +27,7 @@ public class NotifyCron {
     @Scheduled(cron = "${unorder.member.notifyTime}")
     public void checkAndNotify() {
         ArrayList mobiles = new ArrayList();
-        OrderDetailsVO orderDetailsVO = OrderUtil.getOrderDetail();
+        OrderDetailsVO orderDetailsVO = OrderUtils.getOrderDetail();
         if(null != orderDetailsVO && !orderDetailsVO.getNotOrders().isEmpty()){
             orderDetailsVO.getNotOrders().stream().forEach(orderVO -> {
                 String mobile = MemberConstant.memberMap.get(orderVO.getName());

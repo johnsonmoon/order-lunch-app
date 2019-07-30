@@ -1,21 +1,19 @@
 package com.github.johnsonmoon.orderlunch.controller;
 
-import com.github.johnsonmoon.orderlunch.Util.OrderUtil;
+import com.github.johnsonmoon.orderlunch.service.OrderService;
+import com.github.johnsonmoon.orderlunch.util.OrderUtils;
 import com.github.johnsonmoon.orderlunch.action.OrderCache;
 import com.github.johnsonmoon.orderlunch.common.RestContext;
-import com.github.johnsonmoon.orderlunch.constant.MemberConstant;
 import com.github.johnsonmoon.orderlunch.entity.domain.Order;
 import com.github.johnsonmoon.orderlunch.entity.param.OrderParam;
 import com.github.johnsonmoon.orderlunch.entity.vo.OrderDetailsVO;
-import com.github.johnsonmoon.orderlunch.entity.vo.OrderVO;
 import com.github.johnsonmoon.orderlunch.http.HttpResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -26,6 +24,10 @@ import java.util.concurrent.atomic.AtomicBoolean;
 @RequestMapping("/order")
 public class OrderLunchController {
     private static Logger logger = LoggerFactory.getLogger(OrderLunchController.class);
+
+    @Autowired
+    private OrderService orderService;
+
     private static AtomicBoolean locked = new AtomicBoolean(false);
 
     private static void acquireLock() {
@@ -46,58 +48,60 @@ public class OrderLunchController {
     @GetMapping(path = "/increase", produces = "application/json")
     @ResponseBody
     public HttpResponse increaseOrder(OrderParam orderParam) {
-        if(!OrderUtil.validateMember(orderParam.getName())){
-            return new HttpResponse(201,"非法名称无法识别");
+        if (!OrderUtils.validateMember(orderParam.getName())) {
+            return new HttpResponse(201, "非法名称无法识别");
         }
         try {
             acquireLock();
 
             Order order = new Order();
-            order.setName((orderParam == null || orderParam.getName() == null) ? "UNKNOWN" : orderParam.getName());
-            order.setRemark(orderParam == null || orderParam.getRemark() == null ? "" : orderParam.getRemark());
+            order.setName(orderParam.getName() == null ? "UNKNOWN" : orderParam.getName());
+            order.setRemark(orderParam.getRemark() == null ? "" : orderParam.getRemark());
             order.setAppendNum(1);
             order.setIpAddress(getRequestIp(RestContext.getHttpServletRequest()));
             order.setOrderTime(System.currentTimeMillis());
 
             OrderCache.append(order);
+            orderService.save(order);
         } catch (Exception e) {
             logger.warn(e.getMessage(), e);
-            return new HttpResponse(201,"点餐失败");
+            return new HttpResponse(201, "点餐失败");
         } finally {
             releaseLock();
         }
-        return new HttpResponse(200,"点餐成功");
+        return new HttpResponse(200, "点餐成功");
     }
 
     @GetMapping(path = "/decrease", produces = "application/json")
     @ResponseBody
     public HttpResponse decreaseOrder(OrderParam orderParam) {
-        if(!OrderUtil.validateMember(orderParam.getName())){
-            return new HttpResponse(201,"非法名称无法识别");
+        if (!OrderUtils.validateMember(orderParam.getName())) {
+            return new HttpResponse(201, "非法名称无法识别");
         }
         try {
             acquireLock();
 
             if (OrderCache.getSum() <= 0) {
                 logger.warn("Not able to decrease.");
-                return new HttpResponse(201,"撤销点餐失败");
+                return new HttpResponse(201, "撤销点餐失败");
             }
 
             Order order = new Order();
-            order.setName((orderParam == null || orderParam.getName() == null) ? "UNKNOWN" : orderParam.getName());
-            order.setRemark(orderParam == null || orderParam.getRemark() == null ? "" : orderParam.getRemark());
+            order.setName(orderParam.getName() == null ? "UNKNOWN" : orderParam.getName());
+            order.setRemark(orderParam.getRemark() == null ? "" : orderParam.getRemark());
             order.setAppendNum(-1);
             order.setIpAddress(getRequestIp(RestContext.getHttpServletRequest()));
             order.setOrderTime(System.currentTimeMillis());
 
             OrderCache.append(order);
+            orderService.save(order);
         } catch (Exception e) {
             logger.warn(e.getMessage(), e);
-            return new HttpResponse(201,"撤销点餐失败");
+            return new HttpResponse(201, "撤销点餐失败");
         } finally {
             releaseLock();
         }
-        return new HttpResponse(200,"撤销点餐成功");
+        return new HttpResponse(200, "撤销点餐成功");
     }
 
     @GetMapping(path = "/clear", produces = "application/json")
@@ -116,7 +120,7 @@ public class OrderLunchController {
 
     @GetMapping(path = "/details", produces = "application/json")
     public OrderDetailsVO getOrdersDetail() {
-        return OrderUtil.getOrderDetail();
+        return OrderUtils.getOrderDetail();
     }
 
     private static String getRequestIp(HttpServletRequest request) {
