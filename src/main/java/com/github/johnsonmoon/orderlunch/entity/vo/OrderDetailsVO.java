@@ -43,7 +43,7 @@ public class OrderDetailsVO {
     public List<OrderVO> getNotOrders() {
         List<OrderVO> notOrders = new ArrayList<>();
         for(Map.Entry<String,String> entry: MemberConstant.memberMap.entrySet()){
-            if(this.orders.stream().noneMatch(orderVO -> !orderVO.getName().equals(entry.getKey()))){
+            if(this.orders.stream().noneMatch(orderVO -> orderVO.getName().equals(entry.getKey()))){
                 OrderVO orderVO = new OrderVO(entry.getKey());
                 notOrders.add(orderVO);
             }

@@ -47,7 +47,7 @@ public class NotifyCron {
         }
         try {
             if(!mobiles.isEmpty()){
-                alarm.send(wehook,"亲们，中午点外卖不啦?",mobiles);
+                alarm.send(wehook,"没报名的小伙伴抓紧辣~",mobiles);
             }
         } catch (IOException e) {
             e.printStackTrace();
