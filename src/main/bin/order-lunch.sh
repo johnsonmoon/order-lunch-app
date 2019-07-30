@@ -13,6 +13,7 @@ JAVA_OPTS="${JAVA_OPTS} -Xmx512m -Xms256m -Xss256K -XX:MaxMetaspaceSize=256m"
 JAVA_OPTS="${JAVA_OPTS} -XX:+UseParNewGC -XX:+UseConcMarkSweepGC -XX:+CMSClassUnloadingEnabled -XX:+ExplicitGCInvokesConcurrent"
 DEBUG_PORT=9081
 LOG_DIR=${WORK_HOME}/logs/
+DB_DATA_DIR=${WORK_HOME}/dbdata/h2/
 
 # 判断java命令是否存在
 type java >/dev/null 2>&1 || { echo >&2 "java command not found."; exit 1; }
@@ -22,6 +23,12 @@ if [ -e ${LOG_DIR} ]; then
     echo -n ""
 else
     mkdir -p ${LOG_DIR}
+fi
+
+if [ -e ${DB_DATA_DIR} ]; then
+    echo -n ""
+else
+    mkdir -p ${DB_DATA_DIR}
 fi
 
 eval_pid() {

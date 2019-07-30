@@ -7,12 +7,14 @@ import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
 @EnableScheduling
 @ServletComponentScan
+@EnableJpaRepositories("com.github.johnsonmoon.orderlunch.repository")
 @SpringBootApplication
 public class OrderLunchApplication {
     private static ApplicationContext applicationContext;

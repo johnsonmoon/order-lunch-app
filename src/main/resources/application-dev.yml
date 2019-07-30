@@ -1,6 +1,8 @@
 spring:
   resources:
     static-locations: classpath:/static/
+  datasource:
+    url: jdbc:h2:file:${user.dir}/testdbdata/h2/orderlunch;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
 
 logging:
   file: ${user.dir}/logs/order-lunch.log

@@ -31,3 +31,5 @@ build/
 .vscode/
 /logs/
 .DS_Store
+
+/testdbdata/

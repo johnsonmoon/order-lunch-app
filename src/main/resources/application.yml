@@ -10,6 +10,21 @@ server:
 spring:
   profiles:
     active: dev
+  datasource:
+    platform: h2
+    username: root
+    password: Root_123
+    driverClassName: org.h2.Driver
+  jpa:
+    open-in-view: false
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        show_sql: true
+        use_sql_comments: true
+        format_sql: true
 
 unorder:
   member:

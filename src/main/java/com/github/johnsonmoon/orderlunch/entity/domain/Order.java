@@ -1,14 +1,40 @@
 package com.github.johnsonmoon.orderlunch.entity.domain;
 
+import javax.persistence.*;
+
 /**
  * Create by xuyh at 2019/7/25 11:45.
  */
+@Entity
+@Table(name = "`order`")
 public class Order {
+    @Id
+    @GeneratedValue
+    @Column(name = "`id`")
+    private Long id;
+
+    @Column(name = "`name`")
     private String name;
+
+    @Column(name = "`ip_address`")
     private String ipAddress;
+
+    @Column(name = "`append_num`")
     private Integer appendNum;//+1, -1
+
+    @Column(name = "`order_time`")
     private Long orderTime;
+
+    @Column(name = "`remark`")
     private String remark;//备注
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;
@@ -53,7 +79,8 @@ public class Order {
     @Override
     public String toString() {
         return "Order{" +
-                "name='" + name + '\'' +
+                "id=" + id +
+                ", name='" + name + '\'' +
                 ", ipAddress='" + ipAddress + '\'' +
                 ", appendNum=" + appendNum +
                 ", orderTime=" + orderTime +
