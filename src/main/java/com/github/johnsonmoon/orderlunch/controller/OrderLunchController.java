@@ -1,5 +1,7 @@
 package com.github.johnsonmoon.orderlunch.controller;
 
+import com.github.johnsonmoon.orderlunch.entity.domain.Member;
+import com.github.johnsonmoon.orderlunch.service.MemberService;
 import com.github.johnsonmoon.orderlunch.service.OrderService;
 import com.github.johnsonmoon.orderlunch.util.OrderUtils;
 import com.github.johnsonmoon.orderlunch.action.OrderCache;
@@ -28,6 +30,9 @@ public class OrderLunchController {
     @Autowired
     private OrderService orderService;
 
+    @Autowired
+    private MemberService memberService;
+
     private static AtomicBoolean locked = new AtomicBoolean(false);
 
     private static void acquireLock() {
@@ -47,7 +52,7 @@ public class OrderLunchController {
 
     @GetMapping(path = "/increase", produces = "application/json")
     @ResponseBody
-    public HttpResponse increaseOrder(OrderParam orderParam) {
+    public HttpResponse increaseOrder(HttpServletRequest req, OrderParam orderParam) {
         if (!OrderUtils.validateMember(orderParam.getName())) {
             return new HttpResponse(201, "非法名称无法识别");
         }
@@ -69,6 +74,8 @@ public class OrderLunchController {
         } finally {
             releaseLock();
         }
+        Member member = memberService.findByName(orderParam.getName());
+        req.getSession().setAttribute("member",member);
         return new HttpResponse(200, "点餐成功");
     }
 
