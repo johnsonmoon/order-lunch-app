@@ -26,6 +26,12 @@ public class MemberServiceImpl implements MemberService {
     private MemberRepository memberRepository;
 
     @Override
+    public Long save(Member member) {
+        memberRepository.save(member);
+        return member.getId();
+    }
+
+    @Override
     public List<Member> findAll(Member member) {
         List<Member> all = new ArrayList<>();
         if (member != null) {
@@ -39,5 +45,10 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public Member findByName(String name) {
         return memberRepository.findByName(name);
+    }
+
+    @Override
+    public Long getAllCount() {
+        return memberRepository.count();
     }
 }

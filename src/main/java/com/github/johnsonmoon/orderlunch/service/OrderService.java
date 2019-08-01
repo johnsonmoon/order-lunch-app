@@ -1,6 +1,7 @@
 package com.github.johnsonmoon.orderlunch.service;
 
 import com.github.johnsonmoon.orderlunch.entity.domain.Order;
+import com.github.johnsonmoon.orderlunch.entity.vo.OrderDetailsVO;
 
 import java.util.List;
 
@@ -31,4 +32,6 @@ public interface OrderService {
      * @return {@link Order}
      */
     List<Order> getPeriodList(Long gte, Long lte);
+
+    OrderDetailsVO getOrderDetail();
 }

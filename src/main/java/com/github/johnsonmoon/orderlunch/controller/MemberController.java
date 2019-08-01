@@ -2,14 +2,13 @@ package com.github.johnsonmoon.orderlunch.controller;
 
 import com.github.johnsonmoon.orderlunch.entity.domain.Member;
 import com.github.johnsonmoon.orderlunch.entity.http.HttpResponse;
+import com.github.johnsonmoon.orderlunch.entity.param.MemberParam;
 import com.github.johnsonmoon.orderlunch.service.MemberService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -34,5 +33,13 @@ public class MemberController {
         List<Member> all = memberService.findAll(member);
         Map<String, String> collect = all.stream().collect(Collectors.toMap(Member::getName, Member::getPhone));
         return new HttpResponse(200, "成功", collect);
+    }
+
+    @PostMapping(path = "/member", produces = "application/json", consumes = "application/json")
+    public HttpResponse saveMember(@RequestBody MemberParam memberParam) {
+        Member member = new Member();
+        BeanUtils.copyProperties(memberParam, member);
+        Long id = memberService.save(member);
+        return new HttpResponse(200, "成功", id);
     }
 }

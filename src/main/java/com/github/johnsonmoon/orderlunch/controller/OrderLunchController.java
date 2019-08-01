@@ -3,7 +3,6 @@ package com.github.johnsonmoon.orderlunch.controller;
 import com.github.johnsonmoon.orderlunch.entity.domain.Member;
 import com.github.johnsonmoon.orderlunch.service.MemberService;
 import com.github.johnsonmoon.orderlunch.service.OrderService;
-import com.github.johnsonmoon.orderlunch.util.OrderUtils;
 import com.github.johnsonmoon.orderlunch.action.OrderCache;
 import com.github.johnsonmoon.orderlunch.common.RestContext;
 import com.github.johnsonmoon.orderlunch.entity.domain.Order;
@@ -53,7 +52,7 @@ public class OrderLunchController {
     @GetMapping(path = "/increase", produces = "application/json")
     @ResponseBody
     public HttpResponse increaseOrder(HttpServletRequest req, OrderParam orderParam) {
-        if (!OrderUtils.validateMember(orderParam.getName())) {
+        if (!validateMember(orderParam.getName())) {
             return new HttpResponse(201, "非法名称无法识别");
         }
         try {
@@ -75,14 +74,14 @@ public class OrderLunchController {
             releaseLock();
         }
         Member member = memberService.findByName(orderParam.getName());
-        req.getSession().setAttribute("member",member);
+        req.getSession().setAttribute("member", member);
         return new HttpResponse(200, "点餐成功");
     }
 
     @GetMapping(path = "/decrease", produces = "application/json")
     @ResponseBody
     public HttpResponse decreaseOrder(OrderParam orderParam) {
-        if (!OrderUtils.validateMember(orderParam.getName())) {
+        if (!validateMember(orderParam.getName())) {
             return new HttpResponse(201, "非法名称无法识别");
         }
         try {
@@ -127,7 +126,12 @@ public class OrderLunchController {
 
     @GetMapping(path = "/details", produces = "application/json")
     public OrderDetailsVO getOrdersDetail() {
-        return OrderUtils.getOrderDetail();
+        return orderService.getOrderDetail();
+    }
+
+    private boolean validateMember(String name) {
+        Member member = memberService.findByName(name);
+        return member != null;
     }
 
     private static String getRequestIp(HttpServletRequest request) {
