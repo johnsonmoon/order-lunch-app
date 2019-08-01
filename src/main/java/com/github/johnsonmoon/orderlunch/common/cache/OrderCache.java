@@ -1,7 +1,6 @@
-package com.github.johnsonmoon.orderlunch.action;
+package com.github.johnsonmoon.orderlunch.common.cache;
 
 import com.github.johnsonmoon.orderlunch.common.ThreadPools;
-import com.github.johnsonmoon.orderlunch.constant.MemberConstant;
 import com.github.johnsonmoon.orderlunch.entity.domain.Order;
 import com.github.johnsonmoon.orderlunch.service.OrderService;
 import org.slf4j.Logger;
@@ -32,10 +31,6 @@ public class OrderCache {
             sum += order.getAppendNum();
         }
         return sum;
-    }
-
-    public synchronized static Integer getLeft() {
-        return MemberConstant.memberMap.size() - getSum();
     }
 
     public synchronized static List<Order> getOrders() {

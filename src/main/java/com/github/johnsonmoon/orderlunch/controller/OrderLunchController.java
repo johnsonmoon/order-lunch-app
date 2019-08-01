@@ -3,7 +3,7 @@ package com.github.johnsonmoon.orderlunch.controller;
 import com.github.johnsonmoon.orderlunch.entity.domain.Member;
 import com.github.johnsonmoon.orderlunch.service.MemberService;
 import com.github.johnsonmoon.orderlunch.service.OrderService;
-import com.github.johnsonmoon.orderlunch.action.OrderCache;
+import com.github.johnsonmoon.orderlunch.common.cache.OrderCache;
 import com.github.johnsonmoon.orderlunch.common.RestContext;
 import com.github.johnsonmoon.orderlunch.entity.domain.Order;
 import com.github.johnsonmoon.orderlunch.entity.param.OrderParam;

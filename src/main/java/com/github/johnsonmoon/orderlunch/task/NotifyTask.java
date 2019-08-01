@@ -1,9 +1,10 @@
-package com.github.johnsonmoon.orderlunch.cron;
+package com.github.johnsonmoon.orderlunch.task;
 
 import com.alibaba.fastjson.JSON;
-import com.github.johnsonmoon.orderlunch.constant.MemberConstant;
+import com.github.johnsonmoon.orderlunch.entity.domain.Member;
 import com.github.johnsonmoon.orderlunch.entity.vo.OrderDetailsVO;
 import com.github.johnsonmoon.orderlunch.notify.DingDingAlarm;
+import com.github.johnsonmoon.orderlunch.service.MemberService;
 import com.github.johnsonmoon.orderlunch.service.OrderService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,11 +22,13 @@ import java.util.ArrayList;
  * @Description:
  */
 @Component
-public class NotifyCron {
-    private static final Logger LOG = LoggerFactory.getLogger(NotifyCron.class);
+public class NotifyTask {
+    private static final Logger LOG = LoggerFactory.getLogger(NotifyTask.class);
 
     @Autowired
     private OrderService orderService;
+    @Autowired
+    private MemberService memberService;
 
     @Value("${wehook}")
     private String wehook;
@@ -39,7 +42,8 @@ public class NotifyCron {
         OrderDetailsVO orderDetailsVO = orderService.getOrderDetail();
         if (null != orderDetailsVO && !orderDetailsVO.getNotOrders().isEmpty()) {
             orderDetailsVO.getNotOrders().stream().forEach(orderVO -> {
-                String mobile = MemberConstant.memberMap.get(orderVO.getName());
+                Member member = memberService.findByName(orderVO.getName());
+                String mobile = member == null ? "" : member.getPhone();
                 mobiles.add(mobile);
                 LOG.info("未点餐小伙伴:{},手机号:{}", orderVO.getName(), mobile);
             });

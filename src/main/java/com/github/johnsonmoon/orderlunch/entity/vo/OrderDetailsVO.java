@@ -1,11 +1,6 @@
 package com.github.johnsonmoon.orderlunch.entity.vo;
 
-import com.github.johnsonmoon.orderlunch.constant.MemberConstant;
-
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * Create by xuyh at 2019/7/25 11:58.
@@ -41,13 +36,6 @@ public class OrderDetailsVO {
     }
 
     public List<OrderVO> getNotOrders() {
-        List<OrderVO> notOrders = new ArrayList<>();
-        for(Map.Entry<String,String> entry: MemberConstant.memberMap.entrySet()){
-            if(this.orders.stream().noneMatch(orderVO -> orderVO.getName().equals(entry.getKey()))){
-                OrderVO orderVO = new OrderVO(entry.getKey());
-                notOrders.add(orderVO);
-            }
-        }
         return notOrders;
     }
 
