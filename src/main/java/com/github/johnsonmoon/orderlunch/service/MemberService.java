@@ -12,11 +12,17 @@ import java.util.List;
  * @date: 2019-07-31 15:47
  */
 public interface MemberService {
+    Boolean nameExist(String name);
+
     Long save(Member member);
 
     List<Member> findAll(Member member);
 
+    List<Member> findAll();
+
     Member findByName(String name);
 
     Long getAllCount();
+
+    void deleteById(Long id);
 }

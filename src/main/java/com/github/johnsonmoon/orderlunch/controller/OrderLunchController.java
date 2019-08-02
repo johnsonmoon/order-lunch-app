@@ -9,6 +9,7 @@ import com.github.johnsonmoon.orderlunch.entity.domain.Order;
 import com.github.johnsonmoon.orderlunch.entity.param.OrderParam;
 import com.github.johnsonmoon.orderlunch.entity.vo.OrderDetailsVO;
 import com.github.johnsonmoon.orderlunch.entity.http.HttpResponse;
+import com.github.johnsonmoon.orderlunch.util.RequestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,8 +52,9 @@ public class OrderLunchController {
 
     @GetMapping(path = "/increase", produces = "application/json")
     @ResponseBody
-    public HttpResponse increaseOrder(HttpServletRequest req, OrderParam orderParam) {
-        if (!validateMember(orderParam.getName())) {
+    public HttpResponse increaseOrder(OrderParam orderParam) {
+        HttpServletRequest request = RestContext.getHttpServletRequest();
+        if (!memberService.nameExist(orderParam.getName())) {
             return new HttpResponse(201, "非法名称无法识别");
         }
         try {
@@ -62,7 +64,7 @@ public class OrderLunchController {
             order.setName(orderParam.getName() == null ? "UNKNOWN" : orderParam.getName());
             order.setRemark(orderParam.getRemark() == null ? "" : orderParam.getRemark());
             order.setAppendNum(1);
-            order.setIpAddress(getRequestIp(RestContext.getHttpServletRequest()));
+            order.setIpAddress(RequestUtils.getRequestIp(request));
             order.setOrderTime(System.currentTimeMillis());
 
             OrderCache.append(order);
@@ -74,14 +76,15 @@ public class OrderLunchController {
             releaseLock();
         }
         Member member = memberService.findByName(orderParam.getName());
-        req.getSession().setAttribute("member", member);
+        request.getSession().setAttribute("member", member);
         return new HttpResponse(200, "点餐成功");
     }
 
     @GetMapping(path = "/decrease", produces = "application/json")
     @ResponseBody
     public HttpResponse decreaseOrder(OrderParam orderParam) {
-        if (!validateMember(orderParam.getName())) {
+        HttpServletRequest request = RestContext.getHttpServletRequest();
+        if (!memberService.nameExist(orderParam.getName())) {
             return new HttpResponse(201, "非法名称无法识别");
         }
         try {
@@ -96,7 +99,7 @@ public class OrderLunchController {
             order.setName(orderParam.getName() == null ? "UNKNOWN" : orderParam.getName());
             order.setRemark(orderParam.getRemark() == null ? "" : orderParam.getRemark());
             order.setAppendNum(-1);
-            order.setIpAddress(getRequestIp(RestContext.getHttpServletRequest()));
+            order.setIpAddress(RequestUtils.getRequestIp(RestContext.getHttpServletRequest()));
             order.setOrderTime(System.currentTimeMillis());
 
             OrderCache.append(order);
@@ -107,6 +110,8 @@ public class OrderLunchController {
         } finally {
             releaseLock();
         }
+        Member member = memberService.findByName(orderParam.getName());
+        request.getSession().setAttribute("member", member);
         return new HttpResponse(200, "撤销点餐成功");
     }
 
@@ -127,41 +132,5 @@ public class OrderLunchController {
     @GetMapping(path = "/details", produces = "application/json")
     public OrderDetailsVO getOrdersDetail() {
         return orderService.getOrderDetail();
-    }
-
-    private boolean validateMember(String name) {
-        Member member = memberService.findByName(name);
-        return member != null;
-    }
-
-    private static String getRequestIp(HttpServletRequest request) {
-        String ip = null;
-        try {
-            ip = request.getHeader("Proxy-Client-IP");
-            if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-                ip = request.getHeader("WL-Proxy-Client-IP");
-            }
-            if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-                ip = request.getHeader("HTTP_CLIENT_IP");
-            }
-            if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-                ip = request.getHeader("X-Real-IP");
-            }
-            if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-                ip = request.getHeader("X-Forwarded-For");
-            }
-            if (ip != null && ip.length() != 0) {
-                ip = ip.split(",")[0];
-            }
-            if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-                ip = request.getRemoteAddr();
-            }
-            if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-                ip = "127.0.0.1";
-            }
-        } catch (Exception e) {
-            logger.warn(e.getMessage(), e);
-        }
-        return ip;
     }
 }
