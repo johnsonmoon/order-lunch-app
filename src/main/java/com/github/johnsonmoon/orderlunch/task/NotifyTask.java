@@ -30,32 +30,37 @@ public class NotifyTask {
     @Autowired
     private MemberService memberService;
 
-    @Value("${wehook}")
+    @Value("${unorder.member.notify-switch-on}")
+    private Boolean notifyTaskSwitchOn = true;
+
+    @Value("${unorder.member.wehook}")
     private String wehook;
 
     private DingDingAlarm alarm = new DingDingAlarm();
 
     @Scheduled(cron = "${unorder.member.notifyTime}")
     public void checkAndNotify() {
-        LOG.info("开始通知未点餐的小伙伴 ...");
-        ArrayList mobiles = new ArrayList();
-        OrderDetailsVO orderDetailsVO = orderService.getOrderDetail();
-        if (null != orderDetailsVO && !orderDetailsVO.getNotOrders().isEmpty()) {
-            orderDetailsVO.getNotOrders().stream().forEach(orderVO -> {
-                Member member = memberService.findByName(orderVO.getName());
-                String mobile = member == null ? "" : member.getPhone();
-                mobiles.add(mobile);
-                LOG.info("未点餐小伙伴:{},手机号:{}", orderVO.getName(), mobile);
-            });
-        } else {
-            LOG.info("暂无可通知对象:{}", JSON.toJSONString(orderDetailsVO));
-        }
-        try {
-            if (!mobiles.isEmpty()) {
-                alarm.send(wehook, "没报名的小伙伴抓紧辣~", mobiles);
+        if (notifyTaskSwitchOn) {
+            LOG.info("开始通知未点餐的小伙伴 ...");
+            ArrayList mobiles = new ArrayList();
+            OrderDetailsVO orderDetailsVO = orderService.getOrderDetail();
+            if (null != orderDetailsVO && !orderDetailsVO.getNotOrders().isEmpty()) {
+                orderDetailsVO.getNotOrders().stream().forEach(orderVO -> {
+                    Member member = memberService.findByName(orderVO.getName());
+                    String mobile = member == null ? "" : member.getPhone();
+                    mobiles.add(mobile);
+                    LOG.info("未点餐小伙伴:{},手机号:{}", orderVO.getName(), mobile);
+                });
+            } else {
+                LOG.info("暂无可通知对象:{}", JSON.toJSONString(orderDetailsVO));
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+            try {
+                if (!mobiles.isEmpty()) {
+                    alarm.send(wehook, "没报名的小伙伴抓紧辣~", mobiles);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

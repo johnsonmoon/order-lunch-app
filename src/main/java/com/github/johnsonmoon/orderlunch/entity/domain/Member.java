@@ -79,4 +79,16 @@ public class Member {
     public void setJob(String job) {
         this.job = job;
     }
+
+    @Override
+    public String toString() {
+        return "Member{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", age=" + age +
+                ", sex='" + sex + '\'' +
+                ", phone='" + phone + '\'' +
+                ", job='" + job + '\'' +
+                '}';
+    }
 }

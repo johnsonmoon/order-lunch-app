@@ -4,13 +4,10 @@ import com.github.johnsonmoon.orderlunch.entity.domain.Member;
 import com.github.johnsonmoon.orderlunch.repository.MemberRepository;
 import com.github.johnsonmoon.orderlunch.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 
 /**

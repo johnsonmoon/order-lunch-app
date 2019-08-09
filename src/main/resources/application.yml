@@ -28,6 +28,12 @@ spring:
 
 unorder:
   member:
+    notify-switch-on: false
     notifyTime: 0 35 10 ? * MON-FRI
+    wehook: https://oapi.dingtalk.com/robot/send?access_token=344b102369e87573404797a1cd97ba06cfa01e06c8f61ee2b54bb2a44ef27802
+order:
+  cache:
+    clean:
+      switch-on: true
+      cron: 0 0 0 * * *
 
-wehook: https://oapi.dingtalk.com/robot/send?access_token=344b102369e87573404797a1cd97ba06cfa01e06c8f61ee2b54bb2a44ef27802

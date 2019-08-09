@@ -57,7 +57,7 @@ public class MemberController {
     }
 
     @GetMapping(path = "/member/delete")
-    public HttpResponse deletemember(@RequestParam("id") Long id) {
+    public HttpResponse deleteMember(@RequestParam("id") Long id) {
         memberService.deleteById(id);
         return new HttpResponse(200, "成功");
     }
