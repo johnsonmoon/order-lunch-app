@@ -11,7 +11,7 @@
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <springboot.starter.version>2.0.6.RELEASE</springboot.starter.version>
+        <springboot.starter.version>2.5.12</springboot.starter.version>
     </properties>
 
     <dependencies>
